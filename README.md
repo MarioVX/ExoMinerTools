@@ -2,13 +2,18 @@
 Some helper scripts for the game ExoMiner by ExoCorp
 
 ## RC Optimizer & Planetary Scheduler
+###Description
 This tool helps with the Refine and Construct quests of your current planetary. It is best suited for use in higher planetaries, as some of its assumptions are poorly applicable to the early game.
 When executed, it prompts user input on the user's current Refinery & Constructor slots & level and rank. Based on this, it computes and reports:
 1. Possible time saving on the current planetary from unlocking another Refinery or Constructor slot respectively. This can help decide whether farming more cash at the beginning of a planetary is worth it.
 2. Which speed level to upgrade next for the greater total planetary time saving.
 3. An optimal schedule for the current planetary with current settings. Lists for each rank the time it takes to complete, the portion of that time your refineries and constructors need to spend producing each recipe, and the target final stock of the product.
 
-Assumptions:
+###Dependencies
+- numpy
+- scipy.optimize
+
+###Assumptions
 - You complete all refinery and constructor related research at the very beginning of the planetary, before you start tackling the rank quests. This is not recommended on early planetaries, but due to the rank quests' quotas always increasing but research requirements staying the same, the higher your planetary the better this assumptions matches perfect play.
 - Refinery and constructor slots remain constant throughout the planetary. Use the first output to gauge for how long cash farming for the next slot is still worth it, then run with the final slot counts once it no longer is.
 - There are always sufficient raw materials in your mothership to run any refinery recipe unhindered. Maintain sufficient supply by upgrading your deposits.
