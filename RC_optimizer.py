@@ -220,7 +220,7 @@ def main(Rs, Rl, Cs, Cl, rank) -> None:
         print("-"*8,"Refinery","-"*16)
         for x in ref:
             namestring = x[0] + " "*(max_name_length+1-len(x[0]))
-            percentstring = str(round(x[1]*100,ndigits=4))
+            percentstring = str(float(round(x[1]*100,ndigits=4)))
             percentstring = ' '*(3-percentstring.index(".")) + percentstring
             if len(percentstring) < 8:
                 percentstring += ' '*(8-len(percentstring))
@@ -230,7 +230,7 @@ def main(Rs, Rl, Cs, Cl, rank) -> None:
         actsum = sum(x[1] for x in ref)
         if actsum < 1 - 10**(-8):
             namestring = "idle" + " "*(max_name_length+1-len("idle"))
-            percentstring = str(round((1-actsum)*100,ndigits=4))
+            percentstring = str(float(round((1-actsum)*100,ndigits=4)))
             percentstring = ' '*(3-percentstring.index(".")) + percentstring
             if len(percentstring) < 8:
                 percentstring += " "*(8-len(percentstring))
@@ -239,7 +239,7 @@ def main(Rs, Rl, Cs, Cl, rank) -> None:
         print("-"*8,"Constructor","-"*13)
         for x in con:
             namestring = x[0] + " "*(max_name_length+1-len(x[0]))
-            percentstring = str(round(x[1]*100,ndigits=4))
+            percentstring = str(float(round(x[1]*100,ndigits=4)))
             percentstring = ' '*(3-percentstring.index(".")) + percentstring
             if len(percentstring) < 8:
                 percentstring += ' '*(8-len(percentstring))
@@ -249,7 +249,7 @@ def main(Rs, Rl, Cs, Cl, rank) -> None:
         actsum = sum(x[1] for x in con)
         if actsum < 1 - 10**(-8):
             namestring = "idle" + " "*(max_name_length+1-len("idle"))
-            percentstring = str(round((1-actsum)*100,ndigits=4))
+            percentstring = str(float(round((1-actsum)*100,ndigits=4)))
             percentstring = ' '*(3-percentstring.index(".")) + percentstring
             if len(percentstring) < 8:
                 percentstring += " "*(8-len(percentstring))
