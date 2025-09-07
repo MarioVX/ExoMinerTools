@@ -301,6 +301,7 @@ def timestring(num_time:float) -> str:
 def main(Rs, Rl, Cs, Cl, rank) -> None:
     p = 1 + rank//20
     pmod = (p-1)%len(ranks)
+    pcyc = (p-1)//len(ranks)+1
     res_now = solve(Rs*speed(Rl)*1.25**2,Cs*speed(Cl)*1.25**2, pmod)
     if not slots_complete:
         res_rs = solve((Rs+1)*speed(Rl)*1.25**2,Cs*speed(Cl)*1.25**2,pmod).fun
@@ -311,12 +312,12 @@ def main(Rs, Rl, Cs, Cl, rank) -> None:
     print("Plan for Planetary",p,"from rank",(p-1)*20+(p==1),"to",p*20)
     print("at\n",Rs,"Refinery slots, Refinery level",Rl,",\n",Cs,"Constructor slots, Constructor level",Cl)
     print()
-    print("Total time required:",timestring(total_time*p))
+    print("Total time required:",timestring(total_time*pcyc))
     print()
     if not slots_complete:
         print("Improvement options information:")
-        print("Time saved with next Refinery slot:",timestring((res_now.fun-res_rs)*p))
-        print("Time saved with next Constructor slot:",timestring((res_now.fun-res_cs)*p))
+        print("Time saved with next Refinery slot:",timestring((res_now.fun-res_rs)*pcyc))
+        print("Time saved with next Constructor slot:",timestring((res_now.fun-res_cs)*pcyc))
     if res_rl <= res_cl:
         nextup = "Refinery"
     else:
@@ -343,11 +344,11 @@ def main(Rs, Rl, Cs, Cl, rank) -> None:
             print("="*8,"Rank",(p-1)*20+int(rank[:-2]), rank[-2:], "="*14)
         assert rd[rank][-1][0] == "t"
         tr = rd[rank][-1][1]
-        print("Duration:",timestring(p*tr))
+        print("Duration:",timestring(pcyc*tr))
         rs = dict((x,0.0) for x in item_names)
         for x in rd[rank]:
             if x[0] == "s":
-                rs[x[1]] = x[2] * p
+                rs[x[1]] = x[2] * pcyc
         ref = list()
         con = list()
         i = 0
