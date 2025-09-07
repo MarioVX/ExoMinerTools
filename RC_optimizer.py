@@ -46,6 +46,10 @@ rec("Kriptonite Alloy", 600, {"Refined Einherjer":1,})
 rec("Coreium Alloy", 720, {"Manganese Alloy":1,})
 rec("Cerythium Alloy", 840, {"Cobalt Alloy":1,})
 rec("Etherium Alloy", 960, {"Kriptonite Alloy":1})
+rec("Cosmium Alloy", 1080, {"Coreium Alloy":1})
+rec("Galaxium Alloy", 1200, {"Cerythium Alloy":1})
+rec("Mythril Alloy", 1440, {"Etherium Alloy":1})
+rec("Xenon Alloy", 1680, {"Cosmium Alloy":1})
 
 rec("Cables", 60, {"Refined Carbon":4,})
 rec("Fuse", 120, {"Refined Tin":4,})
@@ -68,6 +72,12 @@ rec("Mobile Telescope", 16800, {"Lense":16, "Planet Explorer":1})
 rec("Advanced Antenna", 18000, {"Cobalt Alloy":120, "Etherium Alloy":16})
 rec("Xenon Engine", 19800, {"Manganese Alloy":320, "Ball Bearing":160})
 rec("Planet Radar", 21000, {"Etherium Alloy":16, "Advanced Sensors":1})
+rec("Infrared Homing Turret", 21600, {"Galaxium Alloy":4, "Plasma Cannon":1})
+rec("Gravity Reactor", 24000, {"Refined Cerussite":120, "Xenon Engine":1})
+rec("Exospace Probe", 25200, {"Advanced Antenna":1, "Mobile Telescope":1, "Solar Panel":20})
+rec("Space Protector X1000", 27600, {"Cerythium Alloy":240, "Infrared Homing Turret":1})
+rec("Supercombustion Fuel", 29700, {"Mythril Alloy":400, "Xenon Alloy":80})
+rec("Space Fleet Station", 31500, {"Planet Explorer":48, "Exospace Probe":1})
 
 ranks = {0:{1:{"Make":{"Refined Carbon":50},},
             3:{"Make":{"Refined Tin":100},},
@@ -101,7 +111,26 @@ ranks = {0:{1:{"Make":{"Refined Carbon":50},},
             16:{"Make":{"Ion Rocket Engine":2,},"Have":{"Etherium Alloy":10,}},
             17:{"Make":{"Mini Rover":5, "Planet Explorer":1, "Mobile Telescope":1},},
             18:{"Have":{"Etherium Alloy":100, "Manganese Alloy":800, "Cobalt Alloy":800},},
-            19:{"Make":{"Advanced Antenna":3, "Xenon Engine":2, "Planet Radar":1},}}}
+            19:{"Make":{"Advanced Antenna":3, "Xenon Engine":2, "Planet Radar":1},}},
+         2:{1:{"Make":{"Refined Carbon":100, "Refined Tin":50, "Cables":4}},
+            2:{"Make":{"Fuse":20, "Heat Sensor":15}},
+            3:{"Make":{"Refined Bismuth":1000}},
+            4:{"Make":{"Refined Cerussite":20, "Glass":100}},
+            5:{"Make":{"Refined Manganese":50, "Lense":30, "Circuit":30}},
+            6:{"Make":{"Refined Einherjer":20, "Mini Rover":4}},
+            7:{"Make":{"Solar Panel":6, "Manganese Alloy":30, "Laser Blaster":6}},
+            8:{"Make":{"Refined Cerussite":450, "Surface Scanner":3, "Kriptonite Alloy":120}},
+            9:{"Make":{"Etherium Alloy":40, "Planet Dust Collector":3, "Ion Rocket Engine":2}},
+            10:{"Make":{"Cobalt Alloy":540}},
+            11:{"Make":{"Advanced Antenna":2, "Cerythium Alloy":30, "Cosmium Alloy":10}},
+            12:{"Make":{"Plasma Cannon":1, "Xenon Engine":1, "Galaxium Alloy":5}},
+            13:{"Make":{"Infrared Homing Turret":1, "Refined Cerussite":150, "Mobile Telescope":5}},
+            14:{"Make":{"Cobalt Alloy":600, "Kriptonite Alloy":2500}},
+            15:{"Make":{"Gravity Reactor":1, "Coreium Alloy":500}},
+            16:{"Make":{"Exospace Probe":1, "Cerythium Alloy":300, "Etherium Alloy":1200}},
+            17:{"Make":{"Cosmium Alloy":250, "Space Protector X1000":1}},
+            18:{"Make":{"Mythril Alloy":600, "Xenon Alloy":120, "Supercombustion Fuel":1}},
+            19:{"Make":{"Planet Explorer":60, "Mini Rover":300, "Space Fleet Station":1}}}}
 # ==========
 
 item_names = tuple(item_names)
@@ -375,14 +404,14 @@ def speedratio(Rslots, Cslots, Rlevel=1, Clevel=1, n_iterations=1000):
     cl = Clevel
     n = n_iterations
     while n>0:
-        res_r = solve(Rslots*1.25**2 * speed(rl+1), Cslots*1.25**2 * speed(cl)).fun
-        res_c = solve(Rslots*1.25**2 * speed(rl), Cslots*1.25**2 * speed(cl+1)).fun
+        res_r = sum(solve(Rslots*speed(rl+1)*1.25**2, Cslots*speed(cl)*1.25**2, m).fun for m in range(len(ranks)))
+        res_c = sum(solve(Rslots*speed(rl)*1.25**2, Cslots*speed(cl+1)*1.25**2, m).fun for m in range(len(ranks)))
         if res_c < res_r:
             cl += 1
         else:
             rl += 1
         n -= 1
-    return (rl,cl,speed(rl)*Rslots/(speed(cl)*Cslots))
+        print(rl,cl,speed(rl)*Rslots/(speed(cl)*Cslots), speed(rl)/speed(cl))
 
 if __name__ == "__main__":
     if slots_complete:
